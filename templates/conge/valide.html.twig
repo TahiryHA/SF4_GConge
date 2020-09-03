@@ -51,13 +51,13 @@
                 <td>{{ conge.status ? 'Valider' : 'Refuser' }}</td>
                 {# <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d H:i:s') : '' }}</td> #}
                 <td>
-                    <a href="{{ path('conge_show', {'id': conge.id}) }}">show</a>
+                    <a href="{{ path('conge_show', {'id': conge.id}) }}">Afficher</a>
                     {# <a href="{{ path('conge_edit', {'id': conge.id}) }}">edit</a> #}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="9">Aucun enregistrement trouvé</td>
             </tr>
         {% endfor %}
         </tbody>

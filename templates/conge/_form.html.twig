@@ -1,9 +1,9 @@
 {% form_theme form with ['bootstrap_4_layout.html.twig'] only %}
 
 {{ form_start(form) }}
-<div class="card card-primary">
+<div class="card card-purple">
 	<div class="card-header">
-		<h3 class="card-title"></h3>
+		<h3 class="card-title">Demande de congé</h3>
 	</div>
 	<!-- /.card-header -->
 	<!-- form start -->
@@ -17,7 +17,7 @@
 	<!-- /.card-body -->
 	<div class="card-footer">
 		<a class="float-left" href="{{ path('conge_index') }}">Retour à la liste</a>
-		<button class="btn btn-primary float-right">{{ button_label|default('Save') }}</button>
+		<button class="btn btn-default float-right">{{ button_label|default('Enregistrer') }}</button>
 	</div>
 	<!-- /.card-footer -->
 

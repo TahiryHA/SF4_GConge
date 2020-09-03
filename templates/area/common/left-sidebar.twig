@@ -10,7 +10,6 @@
 	<!-- Sidebar Menu -->
 	<nav class="mt-2">
 		<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
 			<li class="nav-item has-treeview {% if active in in_rh %} menu-open {% endif %}">
 				<a href="javascript:void()" class="nav-link{% if active in in_rh %} active {% endif %}">
 					<i class="nav-icon fa fa-calendar nav-icon"></i>
@@ -172,8 +171,6 @@
 
 				</ul>
 			</li>
-			{% endif %}
-			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
 			
 			{# <li class="nav-item">
 				<a href="{{path("index")}}" class="nav-link {% if active == 'dashboard' %} active {% endif %}">
@@ -204,6 +201,7 @@
 
 							</li>
 							
+							{% if is_granted('ROLE_ADMIN') %}
 							<li class="nav-item">
 								<a href="{{path('societe_new')}}" class="nav-link {% if active == 'societe-add' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
@@ -213,6 +211,7 @@
 								</a>
 
 							</li>
+							{% endif %}
 
 						</ul>
 
@@ -237,6 +236,7 @@
 
 							</li>
 							
+							{% if is_granted('ROLE_ADMIN') %}
 							<li class="nav-item">
 								<a href="{{path('type_new')}}" class="nav-link {% if active == 'type-add' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
@@ -246,12 +246,11 @@
 								</a>
 
 							</li>
+							{% endif %}
 
 						</ul>
 
 			</li>
-			{% endif %}
-			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYER') %}
 			{# <li class="nav-item has-treeview {% if active == 'student' %} menu-open {% endif %}">
 				<a href="javascript:void()" class="nav-link{% if active == 'student' %} active {% endif %}">
 					<i class="nav-icon fas fa-circle nav-icon"></i>
@@ -304,7 +303,6 @@
 					
 				</ul>
 			</li> #}
-			{% endif %}
 		
 
 			
@@ -339,7 +337,6 @@
 					
 				</ul>
 			</li> #}
-			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')%}
 
 			{# <li class="nav-item">
 					<a href="{{path("filiere_index")}}" class="nav-link {% if active == 'filiere' %} active {% endif %}">
@@ -366,6 +363,7 @@
 					</a>
 				</li> #}
 
+				{% if is_granted('ROLE_ADMIN') %}
 				<li class="nav-item">
 					<a href="{{path("user.index")}}" class="nav-link {% if active == 'user' %} active {% endif %}">
 						<i class="nav-icon fas fa-users"></i>
@@ -373,10 +371,10 @@
 							Utilisateur
 						</p>
 					</a>
-				</li>
+				</li>s
+				{% endif %}
 
 			
-			{% endif %}
 
 
 		</ul>

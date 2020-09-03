@@ -14,7 +14,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CongeType extends AbstractType
@@ -23,6 +25,7 @@ class CongeType extends AbstractType
     {
         $builder
             ->add('societe',EntityType::class,[
+                'label' => 'Société',
                 'class' => Societe::class,
                 'choice_label' => 'name',
                 'attr' => [
@@ -33,6 +36,7 @@ class CongeType extends AbstractType
                 'mapped' => false
             ])
             ->add('workers',EntityType::class,[
+                'label' => 'Employée',
                 'class' => Worker::class,
                 'choice_label' => 'name',
                 'placeholder' => 'Trouver l\'employée',
@@ -50,16 +54,18 @@ class CongeType extends AbstractType
                 'format' => 'yyyy-MM-dd',
             ])
             ->add('motif',ChoiceType::class,[
-                'placeholder' => 'Choisissez la motif du conge',
+                'placeholder' => 'Choisissez la motif du congé',
                 'required' => false,
                 'mapped' => false
             ])
             ->add('date_deb', DateType::class, [
+                'label' => 'Début',
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
             ])
             ->add('date_fin', DateType::class, [
+                'label' => 'Fin',
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
@@ -69,15 +75,21 @@ class CongeType extends AbstractType
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
             ])
-            ->add('duree')
-            ->add('qte_dispo')
+            ->add('duree',TextType::class,[
+                'label' => 'Durée'
+            ])
+            ->add('qte_dispo',IntegerType::class,[
+                'label' => 'Quantité disponible'
+            ])
             ->add('start',ChoiceType::class,[
+                'label' => 'Commence le',
                 'choices' => [
                     'Le matin' => 1,
                     'L\'après-midi' => 0
                 ]
             ])
             ->add('end',ChoiceType::class,[
+                'label' => 'Se termine le',
                 'choices' => [
                     'Le matin' => 1,
                     'L\'après-midi' => 0

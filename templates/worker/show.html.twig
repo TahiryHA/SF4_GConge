@@ -56,8 +56,8 @@
 						<td>{{ item.attente }}</td>
 
 						<td>
-							<a href="{{ path('compteur_conge_delete', {'id': item.id}) }}">Delete</a>
-							<a href="{{ path('compteur_conge_edit', {'id': item.id}) }}">edit</a>
+							<a href="{{ path('compteur_conge_delete', {'id': item.id}) }}">Supprimer</a>
+							<a href="{{ path('compteur_conge_edit', {'id': item.id}) }}">Modifier</a>
 						</td>
 					</tr>
 					{% endfor %}
@@ -70,7 +70,7 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('compteur_conge_new',{'worker' : worker.id}) }}">Create new</a>
+	<a href="{{ path('compteur_conge_new',{'worker' : worker.id}) }}">Ajouter un compteur de congé</a>
 
 	{# <a href="{{ path('worker_index') }}">back to list</a> #}
 

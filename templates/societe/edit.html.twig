@@ -7,11 +7,8 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Edit Societe</h1>
 
-    {{ include('societe/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('societe_index') }}">back to list</a>
+    {{ include('societe/_form.html.twig', {'button_label': 'Modification'}) }}
 
     {{ include('societe/_delete_form.html.twig') }}
 {% endblock %}

@@ -22,18 +22,18 @@
                 <td>{{ societe.name }}</td>
                 <td>
                     {# <a href="{{ path('societe_show', {'id': societe.id}) }}">show</a> #}
-                    <a href="{{ path('societe_edit', {'id': societe.id}) }}">edit</a>
+                    <a href="{{ path('societe_edit', {'id': societe.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="2">no records found</td>
+                <td colspan="2">Aucun enregistrement trouvé</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('societe_new') }}">Create new</a>
+    {# <a href="{{ path('societe_new') }}">Ajouter une société</a> #}
 {% endblock %}
 {% block js %}
 	<script>
