@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GestionConge index{% endblock %}
+
+{% block body %}
+    <h1>GestionConge index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Valeur</th>
+                <th>Date</th>
+                <th>De</th>
+                <th>DateInclus</th>
+                <th>Commentaires</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gestion_conge in gestion_conges %}
+            <tr>
+                <td>{{ gestion_conge.id }}</td>
+                <td>{{ gestion_conge.valeur }}</td>
+                <td>{{ gestion_conge.date ? gestion_conge.date|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ gestion_conge.de ? gestion_conge.de|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ gestion_conge.dateInclus ? gestion_conge.dateInclus|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ gestion_conge.commentaires }}</td>
+                <td>
+                    <a href="{{ path('gestion_conge_show', {'id': gestion_conge.id}) }}">show</a>
+                    <a href="{{ path('gestion_conge_edit', {'id': gestion_conge.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('gestion_conge_new') }}">Create new</a>
+{% endblock %}

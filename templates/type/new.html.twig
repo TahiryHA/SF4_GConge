@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Type{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'type-add'} %}
+{% endblock %}
+
+{% block body %}
+
+    {{ include('type/_form.html.twig') }}
+
+{% endblock %}

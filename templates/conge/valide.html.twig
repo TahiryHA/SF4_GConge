@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conge index{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'dc-valide'} %}
+{% endblock %}
+
+{% block body %}
+<table id="societeDatatable" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                {# <th>Id</th> #}
+                <th>Verifier le</th>
+                <th>Par</th>
+                <th>Motif</th>
+                <th>Le</th>
+                <th>Jusqu'a</th>
+                {# <th>Date_inclus</th> #}
+                <th>Durée</th>
+                {# <th>Qte_dispo</th> #}
+                <th>Commence</th>
+                {# <th>End</th> #}
+                {# <th>Commentaires</th> #}
+                <th>Status</th>
+                {# <th>Date_verif</th> #}
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for conge in conges %}
+            <tr>
+                {# <td>{{ conge.id }}</td> #}
+                <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d') : '' }}</td>
+                <td>{{ conge.users|map(u => u.username)|join(' ')|capitalize }}</td>
+
+                <td>{{ conge.motif }}</td>
+                <td>{{ conge.dateDeb ? conge.dateDeb|date('Y-m-d') : '' }}</td>
+                <td>{{ conge.dateFin ? conge.dateFin|date('Y-m-d') : '' }}</td>
+                {# <td>{{ conge.dateInclus ? conge.dateInclus|date('Y-m-d H:i:s') : '' }}</td> #}
+                <td>{{ conge.duree }}</td>
+                {# <td>{{ conge.qteDispo }}</td> #}
+                {% set day = {
+                    '1' : 'Le matin',
+                    '0' : 'L\'après midi'
+                } %}
+                {# <td>{{ conge.qteDispo }}</td> #}
+                <td>{{ day[conge.start] }}</td>
+                {# <td>{{ conge.end }}</td> #}
+                {# <td>{{ conge.commentaires }}</td> #}
+                <td>{{ conge.status ? 'Valider' : 'Refuser' }}</td>
+                {# <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d H:i:s') : '' }}</td> #}
+                <td>
+                    <a href="{{ path('conge_show', {'id': conge.id}) }}">show</a>
+                    {# <a href="{{ path('conge_edit', {'id': conge.id}) }}">edit</a> #}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# <a href="{{ path('conge_new') }}">Create new</a> #}
+{% endblock %}
+{% block js %}
+	<script>
+$("#societeDatatable").DataTable({
+
+"searching": true,
+"order": [
+[0, "DESC"]
+],
+"responsive": true,
+"autoWidth": false
+});
+	</script>
+{% endblock %}

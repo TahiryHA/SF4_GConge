@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CompteurConge{% endblock %}
+
+{% block body %}
+    <h1>CompteurConge</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ compteur_conge.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('compteur_conge_index') }}">back to list</a>
+
+    <a href="{{ path('compteur_conge_edit', {'id': compteur_conge.id}) }}">edit</a>
+
+    {{ include('compteur_conge/_delete_form.html.twig') }}
+{% endblock %}

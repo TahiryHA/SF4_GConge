@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Conge{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'dc-tmdc'} %}
+{% endblock %}
+
+{% block body %}
+
+    {{ include('conge/_form.html.twig', {'button_label': 'Update'}) }}
+
+
+{% endblock %}
+

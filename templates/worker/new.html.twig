@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Worker{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'ge-list'} %}
+{% endblock %}
+
+{% block body %}
+
+    {{ include('worker/_form.html.twig') }}
+
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conge{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'dc-tmdc'} %}
+{% endblock %}
+
+{% block body %}
+    <h1>Conge</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ conge.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_demande</th>
+                <td>{{ conge.dateDemande ? conge.dateDemande|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Motif</th>
+                <td>{{ conge.motif }}</td>
+            </tr>
+            <tr>
+                <th>Date_deb</th>
+                <td>{{ conge.dateDeb ? conge.dateDeb|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_fin</th>
+                <td>{{ conge.dateFin ? conge.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_inclus</th>
+                <td>{{ conge.dateInclus ? conge.dateInclus|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ conge.duree }}</td>
+            </tr>
+            <tr>
+                <th>Qte_dispo</th>
+                <td>{{ conge.qteDispo }}</td>
+            </tr>
+            <tr>
+                <th>Start</th>
+                <td>{{ conge.start }}</td>
+            </tr>
+            <tr>
+                <th>End</th>
+                <td>{{ conge.end }}</td>
+            </tr>
+            <tr>
+                <th>Commentaires</th>
+                <td>{{ conge.commentaires }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ conge.status ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Date_verif</th>
+                <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('conge_index') }}">back to list</a>
+
+    {# <a href="{{ path('conge_edit', {'id': conge.id}) }}">edit</a> #}
+
+    {{ include('conge/_delete_form.html.twig') }}
+{% endblock %}

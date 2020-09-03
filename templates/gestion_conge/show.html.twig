@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GestionConge{% endblock %}
+
+{% block body %}
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Utilisateur</th>
+                <td>{{ gestion_conge.workerId.name }}</td>
+            </tr>
+            <tr>
+                <th>Valeur</th>
+                <td>{{ gestion_conge.valeur }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ gestion_conge.date ? gestion_conge.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>De</th>
+                <td>{{ gestion_conge.de ? gestion_conge.de|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DateInclus</th>
+                <td>{{ gestion_conge.dateInclus ? gestion_conge.dateInclus|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Commentaires</th>
+                <td>{{ gestion_conge.commentaires }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('compteur_conge_new',{'worker' : gestion_conge.workerId.id}) }}">back to list</a>
+
+    {# <a href="{{ path('gestion_conge_edit', {'id': gestion_conge.id}) }}">edit</a> #}
+
+    {{ include('gestion_conge/_delete_form.html.twig') }}
+{% endblock %}

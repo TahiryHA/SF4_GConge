@@ -1,0 +1,386 @@
+
+<!-- Sidebar -->
+{% set in_type = ['type-list','type-add'] %}
+{% set in_societe = ['societe-list','societe-add'] %}
+{% set in_rh = ['ge-list','dc-cdc','dc-tmdc','dc-valide'] %}
+{% set in_ge = ['ge-list'] %}
+{% set in_dc = ['dc-cdc','dc-tmdc','dc-valide'] %}
+<div
+	class="sidebar">
+	<!-- Sidebar Menu -->
+	<nav class="mt-2">
+		<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+			<li class="nav-item has-treeview {% if active in in_rh %} menu-open {% endif %}">
+				<a href="javascript:void()" class="nav-link{% if active in in_rh %} active {% endif %}">
+					<i class="nav-icon fa fa-calendar nav-icon"></i>
+					<p>
+						RH
+						<i class="right fas fa-angle-left"></i>
+					</p>
+				</a>
+				<ul class="nav nav-treeview">
+					
+					<li class="nav-item has-treeview {% if active in in_ge %} menu-open {% endif %}">
+						<a href="" class="nav-link {% if active in in_ge %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Gestion des Employés
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+					
+							<li class="nav-item">
+								<a href="{{path('worker_index')}}" class="nav-link {% if active == 'ge-list' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Liste des Employés
+									</p>
+								</a>
+
+							</li>
+							
+							{# <li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Contrats de travail
+									</p>
+								</a>
+
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Préparation de paie
+									</p>
+								</a>
+
+							</li>
+							
+							<li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Gestion des primes
+									</p>
+								</a>
+
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Configuration
+									<i class="right fas fa-angle-left"></i>
+
+									</p>
+								</a>
+
+							</li> #}
+
+						</ul>
+
+					</li>
+					
+					<li  class="nav-item has-treeview {% if active in in_dc %} menu-open {% endif %}">
+						<a href="" class="nav-link {% if active in in_dc %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Demandes de congés
+								<i class="right fas fa-angle-left"></i>
+
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+					
+							<li class="nav-item">
+								<a href="{{path('conge_new')}}" class="nav-link {% if active == 'dc-cdc' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Compléter ma DC
+									</p>
+								</a>
+
+							</li>
+							
+							<li class="nav-item">
+								<a href="{{path('conge_index')}}" class="nav-link {% if active == 'dc-tmdc' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Toutes mes DC
+									</p>
+								</a>
+
+							</li>
+							<li class="nav-item">
+								<a href="{{path('conge_valide')}}" class="nav-link {% if active == 'dc-valide' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										DC valider
+									</p>
+								</a>
+
+							</li>
+							{# <li class="nav-item">
+								<a href="{{path('conge_index')}}" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Historique DC de l'équipe
+									</p>
+								</a>
+
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Calendrire des absences
+									</p>
+								</a>
+
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Absence à justifier
+								
+
+									</p>
+								</a>
+
+							</li>
+							<li class="nav-item">
+								<a href="" class="nav-link {% if active == 'add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Configuratioon
+									<i class="right fas fa-angle-left"></i>
+
+									</p>
+								</a>
+
+							</li> #}
+
+						</ul>
+						
+
+					</li>
+
+				</ul>
+			</li>
+			{% endif %}
+			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+			
+			{# <li class="nav-item">
+				<a href="{{path("index")}}" class="nav-link {% if active == 'dashboard' %} active {% endif %}">
+					<i class="nav-icon fas fa-tachometer-alt"></i>
+					<p>
+						Tableau de bord
+					</p>
+				</a>
+			</li> #}
+			
+			<li class="nav-item has-treeview {% if active in in_societe %} menu-open {% endif %}">
+						<a href="" class="nav-link{% if active in in_societe %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Société
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+					
+							<li class="nav-item">
+								<a href="{{path('societe_index')}}" class="nav-link {% if active == 'societe-list' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Liste des Sociétés
+									</p>
+								</a>
+
+							</li>
+							
+							<li class="nav-item">
+								<a href="{{path('societe_new')}}" class="nav-link {% if active == 'societe-add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Ajout de Société
+									</p>
+								</a>
+
+							</li>
+
+						</ul>
+
+			</li>
+			<li class="nav-item has-treeview {% if active in in_type %} menu-open {% endif %}">
+						<a href="" class="nav-link{% if active in in_type %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Type
+								<i class="right fas fa-angle-left"></i>
+							</p>
+						</a>
+						<ul class="nav nav-treeview">
+					
+							<li class="nav-item">
+								<a href="{{path('type_index')}}" class="nav-link {% if active == 'type-list' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Liste des types
+									</p>
+								</a>
+
+							</li>
+							
+							<li class="nav-item">
+								<a href="{{path('type_new')}}" class="nav-link {% if active == 'type-add' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Ajout de type
+									</p>
+								</a>
+
+							</li>
+
+						</ul>
+
+			</li>
+			{% endif %}
+			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') or is_granted('ROLE_EMPLOYER') %}
+			{# <li class="nav-item has-treeview {% if active == 'student' %} menu-open {% endif %}">
+				<a href="javascript:void()" class="nav-link{% if active == 'student' %} active {% endif %}">
+					<i class="nav-icon fas fa-circle nav-icon"></i>
+					<p>
+						Etudiants
+						<i class="right fas fa-angle-left"></i>
+					</p>
+				</a>
+				<ul class="nav nav-treeview">
+					<li class="nav-item">
+						<a href="{{path('presence_index')}}" class="nav-link {% if active == 'presence' %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Présence
+							</p>
+						</a>
+
+					</li>
+					<li class="nav-item">
+						<a href="{{path('student_index')}}" class="nav-link {% if active == 'list' %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Liste des étudiants
+							</p>
+						</a>
+
+					</li>
+					
+					{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+					<li class="nav-item">
+						<a href="{{path('student_new')}}" class="nav-link {% if active == 'add' %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Ajout étudiants
+							</p>
+						</a>
+
+					</li>
+					<li class="nav-item">
+						<a href="{{path('scolarite_new')}}" class="nav-link {% if active == 'paye' %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Paiement
+							</p>
+						</a>
+
+					</li>
+					{% endif %}
+
+					
+				</ul>
+			</li> #}
+			{% endif %}
+		
+
+			
+			{# <li class="nav-item has-treeview {% if active == 'rapport' %} menu-open {% endif %}">
+				<a href="javascript:void()" class="nav-link{% if active == 'rapport' %} active {% endif %}">
+					<i class="nav-icon fas fa-circle nav-icon"></i>
+					<p>
+						Rapport
+						<i class="right fas fa-angle-left"></i>
+					</p>
+				</a>
+				<ul class="nav nav-treeview">
+				<li class="nav-item">
+						<a href="{{path('presence_rapport')}}" id="" class="nav-link {% if active == 'presence' %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Présence
+							</p>
+						</a>
+					</li>
+					{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+					<li class="nav-item">
+						<a href="{{path('scolarite_index')}}" id="" class="nav-link {% if active == 'paye' %} active {% endif %}">
+							<i class="far fa-circle nav-icon"></i>
+							<p>
+								Paiement
+							</p>
+						</a>
+					</li>
+					{% endif %}
+					
+					
+				</ul>
+			</li> #}
+			{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')%}
+
+			{# <li class="nav-item">
+					<a href="{{path("filiere_index")}}" class="nav-link {% if active == 'filiere' %} active {% endif %}">
+						<i class="nav-icon fas fa-circle nav-icon"></i>
+						<p>
+							Filière
+						</p>
+					</a>
+				</li>
+			<li class="nav-item">
+					<a href="{{path("classe_index")}}" class="nav-link {% if active == 'classe' %} active {% endif %}">
+						<i class="nav-icon fas fa-circle nav-icon"></i>
+						<p>
+							Classe
+						</p>
+					</a>
+				</li>
+			<li class="nav-item">
+					<a href="{{path("parcour_index")}}" class="nav-link {% if active == 'parcour' %} active {% endif %}">
+						<i class="nav-icon fas fa-circle nav-icon"></i>
+						<p>
+							Parcours
+						</p>
+					</a>
+				</li> #}
+
+				<li class="nav-item">
+					<a href="{{path("user.index")}}" class="nav-link {% if active == 'user' %} active {% endif %}">
+						<i class="nav-icon fas fa-users"></i>
+						<p>
+							Utilisateur
+						</p>
+					</a>
+				</li>
+
+			
+			{% endif %}
+
+
+		</ul>
+	</nav>
+	<!-- /.sidebar-menu -->
+</div>
+<!-- /.sidebar -->
