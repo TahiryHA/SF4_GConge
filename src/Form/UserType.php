@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Service;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,6 +19,25 @@ class UserType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'label' => false
+            ])
+            ->add('service', EntityType::class, [
+                'label' => false,
+                'class' => Service::class,
+                'choice_label' => 'name',
+                'attr' => [
+                    'class' => 'form-control select2bs4'
+                ]
+            ])
+            ->add('role', ChoiceType::class, [
+                'label' => false,
+                'choices' => [
+                    'Administrateur' => 'ROLE_ADMIN',
+                    'Employée' => 'ROLE_EMPLOYER'
+                ],
+                'attr' => [
+                    'class' => 'form-control select2bs4'
+                ],
+                'mapped' => false
             ])
             ->add('email', EmailType::class, [
                 'label' => false

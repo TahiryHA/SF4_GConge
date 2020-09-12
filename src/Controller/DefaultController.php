@@ -52,12 +52,16 @@ class DefaultController extends AbstractController
             return $this->redirectToRoute('app.login');
 
         }
+        
 
         // dump($this->getStats()['declarations']);
+
+        return $this->redirectToRoute('conge_valide');
+
        
-        return $this->render('area/home/index.html.twig', [
-            'data' => $this->getStats(),
-        ]);
+        // return $this->render('area/home/index.html.twig', [
+        //     'data' => $this->getStats(),
+        // ]);
     }
 
     public function getStats()

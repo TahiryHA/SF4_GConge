@@ -14,6 +14,24 @@ $(document).ready(function(){
 
 
 /* ==========================================USED========================================== */
+// var table = document.getElementById("tableID");
+// if (table) {
+//   for (var i = 0; i < table.rows.length; i++) {
+
+//     table.rows[i].onclick = function() {
+//       tableText(this);
+//     };
+//   }
+// }
+
+// function tableText(tableRow) {
+//   var valeur = tableRow.childNodes[3].innerHTML;
+// //   var obj = {'valeur': valeur, 'date': date};
+//   $('#compteur_conge_acquis').val(valeur);
+//   $('#compteur_conge_restant').val(valeur);
+//   $('#compteur_conge_attente').val(valeur);
+  
+// }
 
 
 $(document).on('change','#conge_societe',function(){
@@ -32,7 +50,7 @@ $(document).on('change','#conge_societe',function(){
     })
 });
 
-$(document).on('change','#conge_workers',function(){
+$(document).on('input','#conge_date_demande',function(){
      let $field = $(this)
      let $form = $field.closest('form')
      let data = {}

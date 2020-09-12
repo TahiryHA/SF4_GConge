@@ -40,7 +40,7 @@ class Conge
     private $date_fin;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $date_inclus;
 
@@ -69,10 +69,6 @@ class Conge
      */
     private $commentaires;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Worker::class, mappedBy="conge")
-     */
-    private $workers;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, mappedBy="conge")
@@ -89,9 +85,9 @@ class Conge
      */
     private $date_verif;
 
+
     public function __construct()
     {
-        $this->workers = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 
@@ -216,34 +212,6 @@ class Conge
     public function setCommentaires(string $commentaires): self
     {
         $this->commentaires = $commentaires;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Worker[]
-     */
-    public function getWorkers(): Collection
-    {
-        return $this->workers;
-    }
-
-    public function addWorker(Worker $worker): self
-    {
-        if (!$this->workers->contains($worker)) {
-            $this->workers[] = $worker;
-            $worker->addConge($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWorker(Worker $worker): self
-    {
-        if ($this->workers->contains($worker)) {
-            $this->workers->removeElement($worker);
-            $worker->removeConge($this);
-        }
 
         return $this;
     }

@@ -2,22 +2,38 @@
 
 namespace App\Controller;
 
-use App\Entity\CompteurConge;
-use App\Entity\GestionConge;
 use App\Entity\Type;
-use App\Entity\Worker;
+use App\Entity\User;
+use App\Entity\GestionConge;
+use App\Entity\CompteurConge;
 use App\Form\CompteurCongeType;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\GestionCongeRepository;
 use App\Repository\CompteurCongeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/compteur/conge")
+ * @Route("/area/compteur/conge")
  */
 class CompteurCongeController extends AbstractController
 {
+    
+    public function __construct(EntityManagerInterface $em, GestionCongeRepository $repo)
+    {
+        
+        foreach ($repo->findAll() as $key => $value) {
+            
+            if ($value->getDe() < new \DateTime('now')) {
+                $em->remove($value);
+                $em->flush();
+
+            }
+        }
+    
+    }
     /**
      * @Route("/", name="compteur_conge_index", methods={"GET"})
      */
@@ -34,9 +50,9 @@ class CompteurCongeController extends AbstractController
     public function new(Request $request): Response
     {
 
-        $worker = $this->getDoctrine()->getRepository(Worker::class)->findOneBy(['id' => $request->request->get('worker')]);
+        $worker = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => $request->request->get('worker')]);
         if (empty($worker)) {
-            $worker = $this->getDoctrine()->getRepository(Worker::class)->findOneBy(['id' => $request->query->get('worker')]);
+            $worker = $this->getDoctrine()->getRepository(User::class)->findOneBy(['id' => $request->query->get('worker')]);
         }
         $compteurConge = new CompteurConge();
         $form = $this->createForm(CompteurCongeType::class, $compteurConge);
@@ -63,9 +79,11 @@ class CompteurCongeController extends AbstractController
 
 
             $entityManager->persist($compteurConge);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('worker_show', ['compteur' => $compteurConge->getId() ,'worker' => $worker->getId(),'id' => $worker->getId()]);
+            $entityManager->flush();
+            
+            return $this->redirectToRoute('worker.show', ['compteur' => $compteurConge->getId() ,'worker' => $worker->getId(),'id' => $worker->getId()]);
+     
         }
 
         return $this->render('compteur_conge/new.html.twig', [
@@ -117,13 +135,13 @@ class CompteurCongeController extends AbstractController
      */
     public function delete(Request $request, CompteurConge $compteurConge): Response
     {
-        $id = $compteurConge->getGestionconges()[0]->getWorkerId()->getId();
+        $id = $compteurConge->getGestionconges()[0]->getUser()->getId();
         // if ($this->isCsrfTokenValid('delete' . $compteurConge->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($compteurConge);
             $entityManager->flush();
         // }
 
-        return $this->redirectToRoute('worker_show',['id' => $id]);
+        return $this->redirectToRoute('worker.show',['id' => $id]);
     }
 }

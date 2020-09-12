@@ -10,6 +10,8 @@ use App\Entity\Societe;
 use App\Entity\GestionConge;
 use App\Entity\CompteurConge;
 use Symfony\Component\Form\AbstractType;
+use App\Repository\GestionCongeRepository;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,42 +23,55 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CongeType extends AbstractType
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('societe',EntityType::class,[
-                'label' => 'Société',
-                'class' => Societe::class,
-                'choice_label' => 'name',
-                'attr' => [
-                    'class' => 'form-control select2bs4',
-                    'data-dropdown-css-class' => 'select2bs4',
-                    'style' =>  '"width: 100%;'
-                ],
-                'mapped' => false
-            ])
-            ->add('workers',EntityType::class,[
-                'label' => 'Employée',
-                'class' => Worker::class,
-                'choice_label' => 'name',
-                'placeholder' => 'Trouver l\'employée',
+    
 
-                // 'attr' => [
-                //     'class' => 'form-control select2bs4',
-                //     'data-dropdown-css-class' => 'select2bs4',
-                //     'style' =>  '"width: 100%;'
-                // ],
-                'mapped' => false
-            ])
+
+        $builder
+            // ->add('societe',EntityType::class,[
+            //     'label' => 'Service',
+            //     'class' => Societe::class,
+            //     'choice_label' => 'name',
+            //     'attr' => [
+            //         'class' => 'form-control select2bs4',
+            //         'data-dropdown-css-class' => 'select2bs4',
+            //         'style' =>  '"width: 100%;'
+            //     ],
+            //     'mapped' => false
+            // ])
+            // ->add('workers',EntityType::class,[
+            //     'label' => 'Employée',
+            //     'class' => Worker::class,
+            //     'choice_label' => 'name',
+            //     'placeholder' => 'Trouver l\'employée',
+
+            //     // 'attr' => [
+            //     //     'class' => 'form-control select2bs4',
+            //     //     'data-dropdown-css-class' => 'select2bs4',
+            //     //     'style' =>  '"width: 100%;'
+            //     // ],
+            //     'mapped' => false
+            // ])
             ->add('date_demande', DateType::class, [
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
+                'data' => new \DateTime()
             ])
             ->add('motif',ChoiceType::class,[
+                'label' => $this->security->getUser()->getUsername(),
+                'choices' => $this->test(),
+                // 'choice_label' => 'name',
                 'placeholder' => 'Choisissez la motif du congé',
-                'required' => false,
-                'mapped' => false
+                'multiple' => false,
             ])
             ->add('date_deb', DateType::class, [
                 'label' => 'Début',
@@ -70,14 +85,10 @@ class CongeType extends AbstractType
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
             ])
-            ->add('date_inclus', DateType::class, [
-                'widget' => 'single_text',
-                // this is actually the default format for single_text
-                'format' => 'yyyy-MM-dd',
-            ])
-            ->add('duree',TextType::class,[
-                'label' => 'Durée'
-            ])
+            
+            // ->add('duree',TextType::class,[
+            //     'label' => 'Durée'
+            // ])
             ->add('qte_dispo',IntegerType::class,[
                 'label' => 'Quantité disponible'
             ])
@@ -106,6 +117,24 @@ class CongeType extends AbstractType
             //     'choice_label' => 'username'
             // ])
         ;
+    }
+
+    public function test(){
+        
+            $user = $this->security->getUser();
+
+            $gc = $user->getGestionConges();
+    
+            $cc = [];
+            foreach ($gc as $value) {
+                foreach ($value->getCompteurCongeId() as $val) {
+        
+                    $cc [$val->getTypeId()->getName()] =  $val->getId();
+                }
+            }
+
+            return $cc;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver)

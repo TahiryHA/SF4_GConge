@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'service-add'} %}
+{% endblock %}
+
+{% block body %}
+
+    {{ include('service/_form.html.twig') }}
+
+{% endblock %}

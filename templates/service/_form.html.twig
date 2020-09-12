@@ -1,7 +1,7 @@
 {{ form_start(form) }}
 <div class="card card-purple">
 	<div class="card-header">
-		<h3 class="card-title">{{ button_label is defined ? 'Modification' : 'Ajout' }} de société</h3>
+		<h3 class="card-title">{{ button_label is defined ? 'Modification' : 'Ajout' }} de service</h3>
 	</div>
 	<!-- /.card-header -->
 	<!-- form start -->
@@ -14,7 +14,7 @@
 	</div>
 	<!-- /.card-body -->
 	<div class="card-footer">
-		<a class="float-left" href="{{ path('societe_index') }}">Retour à la liste</a>
+		<a class="float-left" href="{{ path('service_index') }}">Retour à la liste</a>
 		<button class="btn btn-default float-right">{{ button_label|default('Enregister') }}</button>
 	</div>
 	<!-- /.card-footer -->

@@ -16,7 +16,7 @@ class GestionCongeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('valeur')
+            // ->add('valeur')
             ->add('date', DateType::class, [
                 'widget' => 'single_text',
                 // this is actually the default format for single_text
@@ -27,11 +27,11 @@ class GestionCongeType extends AbstractType
                 // this is actually the default format for single_text
                 'format' => 'yyyy-MM-dd',
             ])
-            ->add('dateInclus', DateType::class, [
-                'widget' => 'single_text',
-                // this is actually the default format for single_text
-                'format' => 'yyyy-MM-dd',
-            ])
+            // ->add('dateInclus', DateType::class, [
+            //     'widget' => 'single_text',
+            //     // this is actually the default format for single_text
+            //     'format' => 'yyyy-MM-dd',
+            // ])
             ->add('commentaires',TextareaType::class,[
                 'required' => false
             ])

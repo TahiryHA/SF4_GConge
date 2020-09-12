@@ -29,7 +29,9 @@
         </thead>
         <tbody>
         {% for conge in conges %}
-            <tr>
+            {% for user in conge.users %}
+                {% if user == app.user or is_granted('ROLE_ADMIN') %}
+                    <tr>
                 {# <td>{{ conge.id }}</td> #}
                 <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d') : '' }}</td>
                 <td>{{ conge.users|map(u => u.username)|join(' ')|capitalize }}</td>
@@ -55,6 +57,8 @@
                     {# <a href="{{ path('conge_edit', {'id': conge.id}) }}">edit</a> #}
                 </td>
             </tr>
+                {% endif %}
+            {% endfor %}
         {% else %}
             <tr>
                 <td colspan="9">Aucun enregistrement trouvé</td>

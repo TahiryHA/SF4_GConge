@@ -13,14 +13,17 @@
     </div>
     <div class="col-12 col-sm-12">
         <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label">Service *</label>
+            <div class="col-sm-8">
+                {{form_widget(userForm.service)}}
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-12">
+        <div class="form-group row">
             <label for="" class="col-sm-4 col-form-label">Rôle *</label>
             <div class="col-sm-8">
-                <select class="form-control select2bs4" name="role" data-dropdown-css-class="select2-danger"
-                    style="width: 100%;">
-                    <option value="ROLE_ADMIN">Administrateur</option>
-                    <option value="ROLE_EMPLOYER">Employeur</option>
-                    <option value="ROLE_WORKER">Travailleur</option>
-                </select>
+                {{form_widget(userForm.role)}}
             </div>
         </div>
     </div>

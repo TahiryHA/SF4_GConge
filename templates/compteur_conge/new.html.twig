@@ -13,13 +13,13 @@
 		<h3 class="card-title">Compteur de congé</h3>
 	</div>
 	<!-- /.card-header -->
+		
 	<!-- form start -->
 	<div class="card-body">
 	{{ form_start(form) }}
-	{{ form_widget(form) }}
-    <hr>
-
-	<table id="societeDatatable" class="table table-bordered table-striped">
+	<div class="form-group">
+	<label for="">Gestion de congé</label>
+		<table id="tableID" class="table table-bordered table-striped">
 		<thead>
 			<tr>
 				<th>#</th>
@@ -27,28 +27,28 @@
 				<th>Date</th>
 				<th>Utilisateur</th>
 				<th>De</th>
-				<th>Date à (inclus)</th>
+				{# <th>Date à (inclus)</th> #}
 				<th>Commentaires</th>
 				<th>actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			{% for gestion_conge in gestion_conges %}
-				{% if gestion_conge.workerId == worker %}
+				{% if gestion_conge.user == worker %}
 				<tr>
 					<td>
-                        <input type="checkbox" name="status[{{gestion_conge.id}}]" id="present_{{gestion_conge.id}}" value="{{gestion_conge.id}}">
+                        <input type="checkbox" name="status[{{gestion_conge.id}}]" data-value={{gestion_conge.valeur}} id="present_{{gestion_conge.id}}" value="{{gestion_conge.id}}">
                         <label for="present_{{gestion_conge.id}}"></label>
                     </td>
 					<td>{{ gestion_conge.valeur }}</td>
 					<td>{{ gestion_conge.date ? gestion_conge.date|date('Y-m-d') : '' }}</td>
-					<td>{{ gestion_conge.workerId.name  }}</td>
+					<td>{{ gestion_conge.user.name  }}</td>
 					<td>{{ gestion_conge.de ? gestion_conge.de|date('Y-m-d') : '' }}</td>
-					<td>{{ gestion_conge.dateInclus ? gestion_conge.dateInclus|date('Y-m-d') : '' }}</td>
-					<td>{{ gestion_conge.commentaires }}</td>
+					{# <td>{{ gestion_conge.dateInclus ? gestion_conge.dateInclus|date('Y-m-d') : '' }}</td> #}
+					<td>{{ gestion_conge.commentaires ? gestion_conge.commentaires : 'Aucun commentaire'  }}</td>
 					<td>
-						<a href="{{ path('gestion_conge_delete', {'id': gestion_conge.id}) }}">delete</a>
-						<a href="{{ path('gestion_conge_edit', {'id': gestion_conge.id}) }}">edit</a>
+						<a href="{{ path('gestion_conge_delete', {'id': gestion_conge.id}) }}">Supprimer</a>
+						<a href="{{ path('gestion_conge_edit', {'id': gestion_conge.id}) }}">Modifer</a>
 					</td>
 				</tr>
 				
@@ -60,10 +60,16 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	<a href="{{ path('gestion_conge_new',{'worker' : worker.id}) }}">Nouveu gestion de congé</a>
+
+	</div>
+	{{ form_widget(form) }}
+    <hr>
+
+
 
 		<button class="btn btn-primary float-right">{{ button_label|default('Enregistrer') }}</button>
 
-		<a href="{{ path('gestion_conge_new',{'worker' : worker.id}) }}">Nouveu gestion de congé</a>
 	{{ form_end(form) }}
 
 
@@ -75,7 +81,7 @@
 {% endblock %}
 {% block js %}
 	<script>
-		$("#societeDatatable").DataTable({
+		$("#tableID").DataTable({
 
 "searching": true,
 "order": [
@@ -83,6 +89,20 @@
 ],
 "responsive": true,
 "autoWidth": false
+});
+
+$('input[type="checkbox"]').click(function (e) {
+	var valeur = $(this).attr('data-value');
+
+	if ($(this).prop('checked')) {
+		$('#compteur_conge_acquis').val(valeur);
+		$('#compteur_conge_restant').val(valeur);
+		$('#compteur_conge_attente').val(valeur);
+	}else{
+		$('#compteur_conge_acquis').val(' ');
+		$('#compteur_conge_restant').val(' ');
+		$('#compteur_conge_attente').val(' ');
+	}
 });
 	</script>
 {% endblock %}

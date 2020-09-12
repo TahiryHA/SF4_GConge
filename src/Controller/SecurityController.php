@@ -44,6 +44,13 @@ class SecurityController extends AbstractController
         }else{
             if (empty($repo->findAll())) {
                 $repo->createUser($manager, $encoder);
+                $parameter = new Parameter();
+                $parameter->setCode('PARAMETER.EMAIL')
+                ->setName('EMAIL')
+                ->setValue('admin@gmail.com');
+
+                $manager->persist($parameter);
+                $manager->flush();
             }
             return $this->render('security/_login.html.twig', [
                 'last_username' => $lastUsername,

@@ -62,6 +62,36 @@ class User implements UserInterface
      */
     private $conge;
 
+    /**
+     * @ORM\OneToMany(targetEntity=GestionConge::class, mappedBy="user")
+     */
+    private $gestionConges;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
+     */
+    private $service;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Conge::class, mappedBy="user")
+     */
+    private $conges;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tel;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +100,8 @@ class User implements UserInterface
     public function __construct()
     {
         $this->conge = new ArrayCollection();
+        $this->gestionConges = new ArrayCollection();
+        $this->conges = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -216,6 +248,93 @@ class User implements UserInterface
         if ($this->conge->contains($conge)) {
             $this->conge->removeElement($conge);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|GestionConge[]
+     */
+    public function getGestionConges(): Collection
+    {
+        return $this->gestionConges;
+    }
+
+    public function addGestionConge(GestionConge $gestionConge): self
+    {
+        if (!$this->gestionConges->contains($gestionConge)) {
+            $this->gestionConges[] = $gestionConge;
+            $gestionConge->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGestionConge(GestionConge $gestionConge): self
+    {
+        if ($this->gestionConges->contains($gestionConge)) {
+            $this->gestionConges->removeElement($gestionConge);
+            // set the owning side to null (unless already changed)
+            if ($gestionConge->getUser() === $this) {
+                $gestionConge->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conge[]
+     */
+    public function getConges(): Collection
+    {
+        return $this->conges;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getTel(): ?string
+    {
+        return $this->tel;
+    }
+
+    public function setTel(?string $tel): self
+    {
+        $this->tel = $tel;
 
         return $this;
     }

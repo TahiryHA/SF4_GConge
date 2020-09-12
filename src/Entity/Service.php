@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\SocieteRepository;
+use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=SocieteRepository::class)
+ * @ORM\Entity(repositoryClass=ServiceRepository::class)
  */
-class Societe
+class Service
 {
     /**
      * @ORM\Id()
@@ -25,14 +25,13 @@ class Societe
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Worker::class, mappedBy="societe")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="service")
      */
-    private $workers;
+    private $users;
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
-        $this->workers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,30 +52,30 @@ class Societe
     }
 
     /**
-     * @return Collection|Worker[]
+     * @return Collection|User[]
      */
-    public function getWorkers(): Collection
+    public function getUsers(): Collection
     {
-        return $this->workers;
+        return $this->users;
     }
 
-    public function addWorker(Worker $worker): self
+    public function addUser(User $user): self
     {
-        if (!$this->workers->contains($worker)) {
-            $this->workers[] = $worker;
-            $worker->setSociete($this);
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setService($this);
         }
 
         return $this;
     }
 
-    public function removeWorker(Worker $worker): self
+    public function removeUser(User $user): self
     {
-        if ($this->workers->contains($worker)) {
-            $this->workers->removeElement($worker);
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
             // set the owning side to null (unless already changed)
-            if ($worker->getSociete() === $this) {
-                $worker->setSociete(null);
+            if ($user->getService() === $this) {
+                $user->setService(null);
             }
         }
 

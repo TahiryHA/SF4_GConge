@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\CompteurConge;
+use DateTime;
 use App\Entity\Type;
 use App\Entity\Conge;
 use App\Form\CongeType;
-use App\Repository\CompteurCongeRepository;
-use App\Repository\CongeRepository;
 use App\Services\ApiService;
+use App\Entity\CompteurConge;
+use App\Repository\CongeRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CompteurCongeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,15 +18,25 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/conge")
+ * @Route("/area/conge")
  */
 class CongeController extends AbstractController
 {
     protected $apiService;
 
-    public function __construct(ApiService $apiService)
+    public function __construct(ApiService $apiService,EntityManagerInterface $em, CompteurCongeRepository $repo)
     {
         $this->apiService = $apiService;
+        
+        foreach ($repo->findAll() as $key => $value) {
+            
+            if ($value->getRestant() <= 0) {
+                $em->remove($value);
+                $em->flush();
+
+            }
+        }
+    
     }
 
     /**
@@ -78,14 +90,24 @@ class CongeController extends AbstractController
 
         if ($form->isSubmitted()) {
 
-            // dd($request);
+            $req = $request->request->get('conge');
 
-            // dump($form->getData());
+            $data = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
+
+            $origin = new DateTime($req['date_deb']);
+            $target = new DateTime($req['date_fin']);
+            $interval = $origin->diff($target);
+            $diff = $interval->format('%d%');
             
-            $conge->addWorker($form->get('workers')->getData());
+            // dd($diff);
+            // $conge->addWorker($form->get('workers')->getData());
+            $conge->addUser($this->getUser());
             $conge->setStatus(false);
             $conge->setDateVerif(new \DateTime());
+            $conge->setDuree($diff);
+
+
             // $conge->setQteDispo($request->request->get('conge')['qte_dispo']);
 
             $cc = $this->getDoctrine()->getRepository(CompteurConge::class)->findOneBy(['id' => $request->request->get('conge')['motif']]);
@@ -94,7 +116,7 @@ class CongeController extends AbstractController
             //Increment / decrement
             $compteur = $this->getDoctrine()->getRepository(CompteurConge::class)->findOneBy(['id' => $cc]);
      
-            $new_value = $compteur->getRestant() - $request->request->get('conge')['duree'];
+            $new_value = $compteur->getRestant() - $conge->getDuree();
             $compteur->setRestant($new_value);
 
             $entityManager->persist($compteur);
@@ -145,7 +167,6 @@ class CongeController extends AbstractController
             $title = 'Status is now enable';
         }
 
-        $conge->addUser($this->getUser());
         $conge->setDateVerif(new \DateTime());
 
         $this->apiService->status($conge);
@@ -167,7 +188,7 @@ class CongeController extends AbstractController
         $form->handleRequest($request);
 
         // $form->remove('motif')
-        // ->remove('societe')
+        // ->remove('Service')
         // ->remove('workers')
         // ->remove('date_demande')
         // ;

@@ -9,8 +9,10 @@ use App\Form\UserType;
 use App\Entity\Parameter;
 use App\Services\ApiService;
 use App\Form\UserProfileType;
-use App\Notification\UserNotification;
+use App\Repository\UserRepository;
 use Doctrine\DBAL\Driver\Connection;
+use App\Notification\UserNotification;
+use App\Repository\GestionCongeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,6 +36,35 @@ class UserController extends AbstractController
         $this->em = $this->utils->_em();
         $this->breadcrumbs = $utils->_breadcrumbs();
     }
+
+     /**
+     * @Route("/api/onChangeWorkers", name="workers_change", methods={"GET","POST"},options={"expose"=true})
+     */
+    public function onChangeWorkers(Request $request, UserRepository $repo): Response
+    {
+        $data = [];
+        // $id = $request->request->get('conge')['workers'];
+
+        $worker = $repo->findOneBy(['id' => $this->getUser()->getId()]); 
+
+        $gc = $worker->getGestionConges();
+
+        
+        $select = '<select id="conge_motif" name="conge[motif]" class="form-control">';
+        $select .= '<option value="" disabled selected>Choisissez la motif du conge</option>';
+        foreach ($gc as $cc) {
+
+            foreach ($cc->getCompteurCongeId() as $compteurconge) {
+                $value = $compteurconge->getTypeId();
+                $select .= '<option value="'.$compteurconge->getId().'">'.$value->getName().'</option>';
+            }
+        }
+        $select .= '</select>';
+        // dd($select);
+
+        return new Response($select, Response::HTTP_OK, [], true);
+    }
+
 
     /**
      *@Route("area/user", name="user.index",options={"expose"=true})
@@ -119,6 +150,7 @@ class UserController extends AbstractController
                 }
 
                 $output['data'][] = [
+                    'matricule' => $user->getMATRICULE(),
                     'username' => "<a href=''>" . $user->getUsername() . "</a>",
                     'email' => $user->getEmail(),
                     'role' => $role,
@@ -172,7 +204,7 @@ class UserController extends AbstractController
                     }
                 }
 
-                $roles[] = $_POST['role'];
+                $roles[] = $request->request->get('user')['role'];
                 $user->setRoles($roles);
                 $user->setMatricule(strtoupper(substr(md5(uniqid(rand(1, 6))), 0, 6)));
                 $user->setImage("https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/Username_2-512.png");
@@ -366,6 +398,141 @@ class UserController extends AbstractController
             $this->utils->_remove($user);
 
             return new Response();
+        }
+    }
+
+    /**
+     *@Route("area/worker", name="worker.index",options={"expose"=true})
+     */
+    public function getAllWorker(UserRepository $repo)
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app.login');
+        } else {
+
+            $this->breadcrumbs->prependRouteItem("Acceuil", "index");
+            $this->breadcrumbs->addItem("Employée");
+            $this->breadcrumbs->addItem("Liste");
+
+            $workers = $repo->findAll();
+            $role = ['ROLE_EMPLOYER'];
+            $data = [];
+            foreach ($workers as $key => $value) {
+                if ( $value->getRoles() == $role ) {
+                    $data[] = [
+                        'id' => $value->getId(),
+                        'username' => $value->getUsername(),
+                        'service' => $value->getService()->getName()
+
+                    ];
+                }
+            }
+
+            return $this->render("worker/index.html.twig", [
+                
+                'workers' => $data,
+
+                "user" => $this->getUser(),
+            ]);
+        }
+    }
+
+    /**
+     *@Route("area/worker/{id}", name="worker.show",options={"expose"=true})
+     */
+    public function getWorker(User $user)
+    {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app.login');
+        } else {
+
+            $this->breadcrumbs->prependRouteItem("Acceuil", "index");
+            $this->breadcrumbs->addItem("Employée");
+            $this->breadcrumbs->addItem("Liste");
+
+            $gc = $user->getGestionConges();
+
+            $data = [];
+
+            foreach ($gc as $key => $value) {
+                foreach ($value->getCompteurCongeId() as $key => $val) {
+                    $data [] = $val;
+                }
+            }
+            // dd($data);
+
+            return $this->render("worker/show.html.twig", [
+                
+               'worker' => $user,
+               'compteur_conges' => $data
+            ]);
+        }
+    }
+
+    /**
+     *@Route("area/worker/add", name="worker.add", options={"expose"=true})
+     */
+    public function addWorker(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        UserNotification $notification
+    ) {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app.login');
+        } else {
+            if (!$request->isXmlHttpRequest()) {
+                return new JsonResponse(array('message' => 'Use only ajax!'), 400);
+            }
+
+            $user = new User();
+            $users = $this->utils->_repository(User::class)->findAll();
+
+
+            $data = array();
+
+            foreach ($users as $value) {
+                $data[] = [
+                    $value->getUsername(),
+                    $value->getEmail()
+                ];
+            }
+
+            $userForm = $this->createForm(UserType::class, $user);
+            $userForm->handleRequest($request);
+
+            if ($request->isMethod("POST")) {
+
+                foreach ($data as $value) {
+                    foreach ($value as $val) {
+                        if ($val == $userForm['username']->getData() || $val == $userForm['email']->getData()) {
+                            return new JsonResponse(array("message" => $val . " est déjà utilisé!"), 500);
+                            break;
+                        }
+                    }
+                }
+
+                $roles[] = $_POST['role'];
+                $user->setRoles($roles);
+                $user->setMatricule(strtoupper(substr(md5(uniqid(rand(1, 6))), 0, 6)));
+                $user->setImage("https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/Username_2-512.png");
+
+                // $password = $this->randomPassword();
+                $password = 123456;
+                $user->setPassword($passwordEncoder->encodePassword($user, $password));
+
+                $parameter = $this->utils->_repository(Parameter::class)->findOneBy(["CODE" => "PARAMETER.EMAIL"]);
+                $email = $parameter->getValue();
+
+                $notification->notify($user, $password, $email);
+
+                $this->utils->_persist($user);
+
+                return new JsonResponse(array('message' => 'Success!'), 200);
+            }
+
+            return $this->render("worker/new.html.twig", [
+                'userForm' => $userForm->createView(),
+            ]);
         }
     }
 }

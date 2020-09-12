@@ -1,7 +1,7 @@
 
 <!-- Sidebar -->
 {% set in_type = ['type-list','type-add'] %}
-{% set in_societe = ['societe-list','societe-add'] %}
+{% set in_societe = ['service-list','service-add'] %}
 {% set in_rh = ['ge-list','dc-cdc','dc-tmdc','dc-valide'] %}
 {% set in_ge = ['ge-list'] %}
 {% set in_dc = ['dc-cdc','dc-tmdc','dc-valide'] %}
@@ -20,21 +20,22 @@
 				</a>
 				<ul class="nav nav-treeview">
 					
+					{% if is_granted('ROLE_ADMIN') %}
 					<li class="nav-item has-treeview {% if active in in_ge %} menu-open {% endif %}">
 						<a href="" class="nav-link {% if active in in_ge %} active {% endif %}">
 							<i class="far fa-circle nav-icon"></i>
 							<p>
-								Gestion des Employés
+								Gestion des employés
 								<i class="right fas fa-angle-left"></i>
 							</p>
 						</a>
 						<ul class="nav nav-treeview">
 					
 							<li class="nav-item">
-								<a href="{{path('worker_index')}}" class="nav-link {% if active == 'ge-list' %} active {% endif %}">
+								<a href="{{path('worker.index')}}" class="nav-link {% if active == 'ge-list' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
 									<p>
-										Liste des Employés
+										Liste des employés
 									</p>
 								</a>
 
@@ -83,6 +84,7 @@
 						</ul>
 
 					</li>
+					{% endif %}
 					
 					<li  class="nav-item has-treeview {% if active in in_dc %} menu-open {% endif %}">
 						<a href="" class="nav-link {% if active in in_dc %} active {% endif %}">
@@ -95,25 +97,28 @@
 						</a>
 						<ul class="nav nav-treeview">
 					
+							{% if is_granted('ROLE_EMPLOYER') %}
 							<li class="nav-item">
 								<a href="{{path('conge_new')}}" class="nav-link {% if active == 'dc-cdc' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
 									<p>
 										Compléter ma DC
+									</p>                                                                                             
+								</a>
+
+							</li>
+							{% endif %}
+							<li class="nav-item">
+								<a href="{{path('conge_index')}}" class="nav-link {% if active == 'dc-tmdc' %} active {% endif %}">
+									<i class="far fa-circle nav-icon"></i>
+									<p>
+										Toutes {% if is_granted('ROLE_ADMIN') %} les {% else %} mes {% endif %} DC
 									</p>
 								</a>
 
 							</li>
 							
-							<li class="nav-item">
-								<a href="{{path('conge_index')}}" class="nav-link {% if active == 'dc-tmdc' %} active {% endif %}">
-									<i class="far fa-circle nav-icon"></i>
-									<p>
-										Toutes mes DC
-									</p>
-								</a>
-
-							</li>
+							
 							<li class="nav-item">
 								<a href="{{path('conge_valide')}}" class="nav-link {% if active == 'dc-valide' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
@@ -181,21 +186,22 @@
 				</a>
 			</li> #}
 			
+			{% if is_granted('ROLE_ADMIN') %}
 			<li class="nav-item has-treeview {% if active in in_societe %} menu-open {% endif %}">
 						<a href="" class="nav-link{% if active in in_societe %} active {% endif %}">
 							<i class="far fa-circle nav-icon"></i>
 							<p>
-								Société
+								Service
 								<i class="right fas fa-angle-left"></i>
 							</p>
 						</a>
 						<ul class="nav nav-treeview">
 					
 							<li class="nav-item">
-								<a href="{{path('societe_index')}}" class="nav-link {% if active == 'societe-list' %} active {% endif %}">
+								<a href="{{path('service_index')}}" class="nav-link {% if active == 'service-list' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
 									<p>
-										Liste des Sociétés
+										Liste des services
 									</p>
 								</a>
 
@@ -203,10 +209,10 @@
 							
 							{% if is_granted('ROLE_ADMIN') %}
 							<li class="nav-item">
-								<a href="{{path('societe_new')}}" class="nav-link {% if active == 'societe-add' %} active {% endif %}">
+								<a href="{{path('service_new')}}" class="nav-link {% if active == 'service-add' %} active {% endif %}">
 									<i class="far fa-circle nav-icon"></i>
 									<p>
-										Ajout de Société
+										Ajout de service
 									</p>
 								</a>
 
@@ -251,6 +257,7 @@
 						</ul>
 
 			</li>
+			{% endif %}
 			{# <li class="nav-item has-treeview {% if active == 'student' %} menu-open {% endif %}">
 				<a href="javascript:void()" class="nav-link{% if active == 'student' %} active {% endif %}">
 					<i class="nav-icon fas fa-circle nav-icon"></i>

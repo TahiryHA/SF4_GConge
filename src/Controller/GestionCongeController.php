@@ -2,21 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\CompteurConge;
+use DateTime;
+use App\Entity\User;
 use App\Entity\GestionConge;
-use App\Entity\Worker;
+use App\Entity\CompteurConge;
 use App\Form\GestionCongeType;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\GestionCongeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
- * @Route("/gestion/conge")
+ * @Route("/area/gestion/conge")
  */
 class GestionCongeController extends AbstractController
 {
+    
+
     /**
      * @Route("/", name="gestion_conge_index", methods={"GET"})
      */
@@ -32,7 +37,9 @@ class GestionCongeController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $worker = $this->getDoctrine()->getRepository(Worker::class)->findOneBy(['id' => $request->query->get('worker')]);
+
+        $worker = $this->getDoctrine()->getRepository(User::class)->find($request->query->get('worker'));
+
         $gestionConge = new GestionConge();
         $form = $this->createForm(GestionCongeType::class, $gestionConge);
         $form->handleRequest($request);
@@ -41,7 +48,17 @@ class GestionCongeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
-            $gestionConge->setWorkerId($worker);
+
+            $req = $request->get('gestion_conge');
+
+            $origin = new DateTime($req['date']);
+            $target = new DateTime($req['de']);
+            $interval = $origin->diff($target);
+            $diff = $interval->format('%d%');
+
+            $gestionConge->setUser($worker)
+            ->setValeur($diff);
+
 
             $entityManager->persist($gestionConge);
 
@@ -99,7 +116,7 @@ class GestionCongeController extends AbstractController
      */
     public function delete(Request $request, GestionConge $gestionConge): Response
     {
-        $id = $gestionConge->getWorkerId()->getId();
+        $id = $gestionConge->getUser()->getId();
         // if ($this->isCsrfTokenValid('delete'.$gestionConge->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($gestionConge);
@@ -108,4 +125,31 @@ class GestionCongeController extends AbstractController
 
         return $this->redirectToRoute('compteur_conge_new',['worker' => $id ]);
     }
+
+    // /**
+    //  * @Route("/api/onClickCheckbox", name="checkbox.onchange", methods={"GET","POST"},options={"expose"=true})
+    //  */
+    // public function onClickCheckbox(Request $request, UserRepository $repo): Response
+    // {
+    //     $data = [];
+
+    //     $id = $request->request->get('conge')['workers'];
+
+    //     $gc = $worker->getGestionConges();
+
+        
+    //     $select = '<select id="conge_motif" name="conge[motif]" class="form-control">';
+    //     $select .= '<option value="" disabled selected>Choisissez la motif du conge</option>';
+    //     foreach ($gc as $cc) {
+
+    //         foreach ($cc->getCompteurCongeId() as $compteurconge) {
+    //             $value = $compteurconge->getTypeId();
+    //             $select .= '<option value="'.$compteurconge->getId().'">'.$value->getName().'</option>';
+    //         }
+    //     }
+    //     $select .= '</select>';
+    //     // dd($select);
+
+    //     return new Response($select, Response::HTTP_OK, [], true);
+    // }
 }

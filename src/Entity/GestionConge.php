@@ -35,7 +35,7 @@ class GestionConge
     private $de;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateInclus;
 
@@ -50,9 +50,9 @@ class GestionConge
     private $compteurConge_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Worker::class, inversedBy="gestionConges")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="gestionConges")
      */
-    private $worker_id;
+    private $user;
 
     public function __construct()
     {
@@ -150,14 +150,14 @@ class GestionConge
         return $this;
     }
 
-    public function getWorkerId(): ?Worker
+    public function getUser(): ?User
     {
-        return $this->worker_id;
+        return $this->user;
     }
 
-    public function setWorkerId(?Worker $worker_id): self
+    public function setUser(?User $user): self
     {
-        $this->worker_id = $worker_id;
+        $this->user = $user;
 
         return $this;
     }

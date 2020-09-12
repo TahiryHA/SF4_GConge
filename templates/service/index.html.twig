@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Societe index{% endblock %}
+{% block title %}Service index{% endblock %}
 
 {% block left_sidebar %}
-	{% include 'area/common/left-sidebar.twig' with { active: 'societe-list'} %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'service-list'} %}
 {% endblock %}
 
 {% block body %}
@@ -16,13 +16,13 @@
             </tr>
         </thead>
         <tbody>
-        {% for societe in societes %}
+        {% for service in services %}
             <tr>
-                {# <td>{{ societe.id }}</td> #}
-                <td>{{ societe.name }}</td>
+                {# <td>{{ service.id }}</td> #}
+                <td>{{ service.name }}</td>
                 <td>
-                    {# <a href="{{ path('societe_show', {'id': societe.id}) }}">show</a> #}
-                    <a href="{{ path('societe_edit', {'id': societe.id}) }}">Modifier</a>
+                    {# <a href="{{ path('societe_show', {'id': service.id}) }}">show</a> #}
+                    <a href="{{ path('service_edit', {'id': service.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

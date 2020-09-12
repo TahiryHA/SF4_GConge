@@ -10,7 +10,7 @@
      <table id="societeDatatable" class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th>Société</th>
+                <th>Service</th>
                 <th>Nom</th>
                 <th>Actions</th>
             </tr>
@@ -18,11 +18,11 @@
         <tbody>
         {% for worker in workers %}
             <tr>
-                <td>{{ worker.societe.name }}</td>
-                <td>{{ worker.name }}</td>
+                <td>{{ worker.service }}</td>
+                <td>{{ worker.username }}</td>
                 <td>
-                    <a href="{{ path('worker_show', {'id': worker.id}) }}">Afficher</a>
-                    <a href="{{ path('worker_edit', {'id': worker.id}) }}">Modifier</a>
+                    <a href="{{ path('worker.show',{'id' : worker.id}) }}">Afficher</a>
+                    {# <a href="{{ path('worker.show',{'id' : worker.id}) }}">Modifier</a> #}
                 </td>
             </tr>
         {% else %}
@@ -33,7 +33,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('worker_new') }}">Ajouter un employé</a>
+    <a href="{{ path('worker.add') }}">Ajouter un employé</a>
 {% endblock %}
 {% block js %}
 	<script>

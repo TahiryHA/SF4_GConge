@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Service{% endblock %}
+
+{% block left_sidebar %}
+	{% include 'area/common/left-sidebar.twig' with { active: 'service-list'} %}
+{% endblock %}
+
+{% block body %}
+
+    {{ include('service/_form.html.twig', {'button_label': 'Modification'}) }}
+
+    {{ include('service/_delete_form.html.twig') }}
+{% endblock %}
