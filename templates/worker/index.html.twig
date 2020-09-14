@@ -7,12 +7,24 @@
 {% endblock %}
 
 {% block body %}
+    <div class="card-header">
+        <div class="d-flex align-items-center">
+            <h4 class="card-title"><span class="fa fa-users"></span> Employée <span class="badge badge-pill badge-secondary">{{workers|length}}</span></h4>
+            <div class="ml-auto">
+                <a href="{{ path('domp_pdf') }}" target="_blank" class="btn btn-default btn-round" >
+                    <i class="fa fa-print"></i>
+                    Imprimer la liste
+                </a>
+            </div>
+        </div>
+    </div>
      <table id="societeDatatable" class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>Service</th>
                 <th>Nom</th>
-                <th>Actions</th>
+                <th>Matricule</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -20,8 +32,10 @@
             <tr>
                 <td>{{ worker.service }}</td>
                 <td>{{ worker.username }}</td>
+                <td>{{ worker.matricule }}</td>
+
                 <td>
-                    <a href="{{ path('worker.show',{'id' : worker.id}) }}">Afficher</a>
+                    <a href="{{ path('worker.show',{'id' : worker.id}) }}">Plus d'infos</a>
                     {# <a href="{{ path('worker.show',{'id' : worker.id}) }}">Modifier</a> #}
                 </td>
             </tr>
@@ -33,7 +47,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('worker.add') }}">Ajouter un employé</a>
+    {# <a href="{{ path('worker.add') }}">Ajouter un employé</a> #}
 {% endblock %}
 {% block js %}
 	<script>

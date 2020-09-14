@@ -92,6 +92,11 @@ class User implements UserInterface
      */
     private $tel;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Conge::class, mappedBy="user_valid")
+     */
+    private $conges_valid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -102,6 +107,7 @@ class User implements UserInterface
         $this->conge = new ArrayCollection();
         $this->gestionConges = new ArrayCollection();
         $this->conges = new ArrayCollection();
+        $this->conges_valid = new ArrayCollection();
     }
 
     public function getEmail(): ?string
@@ -335,6 +341,34 @@ class User implements UserInterface
     public function setTel(?string $tel): self
     {
         $this->tel = $tel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Conge[]
+     */
+    public function getCongesValid(): Collection
+    {
+        return $this->conges_valid;
+    }
+
+    public function addCongesValid(Conge $congesValid): self
+    {
+        if (!$this->conges_valid->contains($congesValid)) {
+            $this->conges_valid[] = $congesValid;
+            $congesValid->addUserValid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCongesValid(Conge $congesValid): self
+    {
+        if ($this->conges_valid->contains($congesValid)) {
+            $this->conges_valid->removeElement($congesValid);
+            $congesValid->removeUserValid($this);
+        }
 
         return $this;
     }

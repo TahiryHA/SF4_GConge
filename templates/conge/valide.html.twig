@@ -28,13 +28,13 @@
             </tr>
         </thead>
         <tbody>
-        {% for conge in conges %}
+        {% for conge in conges|sort|reverse %}
             {% for user in conge.users %}
                 {% if user == app.user or is_granted('ROLE_ADMIN') %}
                     <tr>
                 {# <td>{{ conge.id }}</td> #}
                 <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d') : '' }}</td>
-                <td>{{ conge.users|map(u => u.username)|join(' ')|capitalize }}</td>
+                <td>{{ conge.userValid|map(u => u.username)|join(' ')|capitalize }}</td>
 
                 <td>{{ conge.motif }}</td>
                 <td>{{ conge.dateDeb ? conge.dateDeb|date('Y-m-d') : '' }}</td>

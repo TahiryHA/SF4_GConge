@@ -11,25 +11,25 @@
 	<h4>Informations</h4>
 	<table class="table">
 		<tbody>
-			{# <tr>
-				<th>Civilité</th>
-				<td>SelctBox</td>
-			</tr> #}
+			<tr>
+				<th>Matricule</th>
+				<td>{{worker.MATRICULE ? worker.MATRICULE : ' - '}}</td>
+			</tr>
 			<tr>
 				<th>Nom</th>
-				<td>{{ worker.name }}</td>
+				<td>{{ worker.name ? worker.name : ' - ' }}</td>
 			</tr>
 			<tr>
 				<th>Prénom</th>
-				<td>{{ worker.lastname }}</td>
+				<td>{{ worker.lastname ? worker.lastname : ' - '}}</td>
 			</tr>
 			<tr>
 				<th>Email</th>
-				<td>{{ worker.email }}</td>
+				<td>{{ worker.email ? worker.email : ' - ' }}</td>
 			</tr>
 			<tr>
 				<th>Tél</th>
-				<td>{{ worker.tel }}</td> 
+				<td>{{ worker.tel ? worker.tel : ' - ' }}</td> 
 			</tr>
 		</tbody>
 	</table>

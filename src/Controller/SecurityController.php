@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Exception;
 use App\Utils\Utils;
+use App\Entity\Service;
 use App\Entity\Parameter;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,14 +44,20 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('admin_index');
         }else{
             if (empty($repo->findAll())) {
-                $repo->createUser($manager, $encoder);
                 $parameter = new Parameter();
                 $parameter->setCode('PARAMETER.EMAIL')
                 ->setName('EMAIL')
                 ->setValue('admin@gmail.com');
 
+                $service = new Service();
+                $service->setName('RH');
+
                 $manager->persist($parameter);
+                $manager->persist($service);
+
                 $manager->flush();
+
+                $repo->createUser($manager, $encoder);
             }
             return $this->render('security/_login.html.twig', [
                 'last_username' => $lastUsername,

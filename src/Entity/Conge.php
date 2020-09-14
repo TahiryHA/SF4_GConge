@@ -85,10 +85,16 @@ class Conge
      */
     private $date_verif;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="conges_valid")
+     */
+    private $user_valid;
+
 
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->user_valid = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -264,6 +270,32 @@ class Conge
     public function setDateVerif(\DateTimeInterface $date_verif): self
     {
         $this->date_verif = $date_verif;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUserValid(): Collection
+    {
+        return $this->user_valid;
+    }
+
+    public function addUserValid(User $userValid): self
+    {
+        if (!$this->user_valid->contains($userValid)) {
+            $this->user_valid[] = $userValid;
+        }
+
+        return $this;
+    }
+
+    public function removeUserValid(User $userValid): self
+    {
+        if ($this->user_valid->contains($userValid)) {
+            $this->user_valid->removeElement($userValid);
+        }
 
         return $this;
     }

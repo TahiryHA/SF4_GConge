@@ -29,7 +29,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for conge in conges %}
+        {% for conge in conges|sort|reverse %}
            
             {% for user in conge.users %}
                 {% if user == app.user or is_granted('ROLE_ADMIN') %}
@@ -55,7 +55,7 @@
                 {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{path('conge_status',{'id' : conge.id })}}">{{ conge.status ? 'Valider' : 'Refuser' }}</a>
                 {% else %}
-                {{ conge.status ? 'Valider' : 'Refuser' }}
+                {{ conge.status ? 'Valider' : 'En attente' }}
                 {% endif %}
                 </td>
                 {# <td>{{ conge.dateVerif ? conge.dateVerif|date('Y-m-d H:i:s') : '' }}</td> #}

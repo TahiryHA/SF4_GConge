@@ -20,6 +20,12 @@ class UserType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => false
             ])
+            ->add('name', TextType::class, [
+                'label' => false
+            ])
+            ->add('lastname', TextType::class, [
+                'label' => false
+            ])
             ->add('service', EntityType::class, [
                 'label' => false,
                 'class' => Service::class,
@@ -40,6 +46,9 @@ class UserType extends AbstractType
                 'mapped' => false
             ])
             ->add('email', EmailType::class, [
+                'label' => false
+            ])
+            ->add('tel', TextType::class, [
                 'label' => false
             ])
         ;

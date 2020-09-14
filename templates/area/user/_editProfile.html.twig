@@ -60,8 +60,8 @@
     </div>
     <hr>
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label">Nom *</label>
-        <div class="col-sm-10">
+        <label class="col-sm-4 col-form-label">Nom d'utilisateur *</label>
+        <div class="col-sm-8">
             {{form_widget(userForm.username,{'attr':{
                     'placeholder':'Nom d\'utilisateur'
                 }})}}
@@ -71,8 +71,8 @@
 
     <div class="form-group row">
 
-        <label class="col-sm-2 col-form-label">Role *</label>
-        <div class="col-sm-10">
+        <label class="col-sm-4 col-form-label">Role *</label>
+        <div class="col-sm-8">
             <select class="custom-select" name="role">
                 {% set roleLabels = {
                             "ROLE_SUPER_ADMIN": 'Super Administrateur',
@@ -109,8 +109,8 @@
     </div>
     <div class="form-group row">
 
-        <label class="col-sm-2 col-form-label">Email *</label>
-        <div class="col-sm-10">
+        <label class="col-sm-4 col-form-label">Email *</label>
+        <div class="col-sm-8">
             {{form_row(userForm.email,{'attr':{
       
             'placeholder':'Adresse e-mail'

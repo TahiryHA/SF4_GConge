@@ -166,7 +166,7 @@ class CongeController extends AbstractController
             $icon = "success";
             $title = 'Status is now enable';
         }
-
+        $conge->addUserValid($this->getUser());
         $conge->setDateVerif(new \DateTime());
 
         $this->apiService->status($conge);

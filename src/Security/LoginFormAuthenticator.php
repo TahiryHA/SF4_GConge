@@ -45,13 +45,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'MATRICULE' => $request->request->get('MATRICULE'),
+            'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['MATRICULE']
+            $credentials['username']
         );
 
         return $credentials;
@@ -64,11 +64,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['MATRICULE' => $credentials['MATRICULE']]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['USERNAME' => $credentials['username']]);
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Utilisateur inconnu!');
+            throw new CustomUserMessageAuthenticationException('Nom d\'utilisateur inconnu!');
         }
 
         return $user;

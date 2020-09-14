@@ -19,18 +19,24 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserRepository extends ServiceEntityRepository
 {
     protected $db;
-    public function __construct(ManagerRegistry $registry,Connection $db)
+    protected $repo;
+    public function __construct(ManagerRegistry $registry,Connection $db, ServiceRepository $repo)
     {
         parent::__construct($registry, User::class);
         $this->db = $db;
+        $this->repo = $repo;
     }
 
     public function createUser(EntityManagerInterface $manager,UserPasswordEncoderInterface $passwordEncoder){
+        
+        $service = $this->repo->findOneBy(['name' => 'RH']);
+        
         $user = new User();
         $password = $passwordEncoder->encodePassword($user,"admin");
         $roles[] = "ROLE_SUPER_ADMIN";
         $user->setMatricule(strtoupper(substr(md5(uniqid(rand(1, 6))), 0, 6)));
         $user->setUsername("root");
+        $user->setService($service);
         $user->setImage("https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/Username_2-512.png");
         $user->setEmail("admin@default.mg");
         $user->setPassword($password);

@@ -2,6 +2,7 @@
 
 namespace App\Controller\Area;
 
+use App\Repository\UserRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 // Include Dompdf required namespaces
@@ -16,30 +17,39 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class DompController extends Controller
 {
      /**
-     * @Route("/{dossierNum}", name="domp_pdf", methods={"GET","POST"})
+     * @Route("/", name="domp_pdf", methods={"GET","POST"})
      */
-    public function index($dossierNum)
+    public function index(UserRepository $repo)
     {
-        // $data = $repo->findOneBy(['DOSSIER_NUMERO' => $dossierNum]);
-        if (empty($data)) {
-            $this->addFlash("warning","Le document que vous cherchez n'est plus disponible!");
-            return $this->redirectToRoute('sig_index');
-        }      
-        if ($data->getSTATUS() == false) {
-                $this->addFlash("info","Ce document est en cours de traitement. Veuillez réesayer plus tard!");
-            return $this->redirectToRoute('sig_index');
-        }
+        
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial'); 
         
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
+
+        $workers = $repo->findAll();
+        $role = ['ROLE_EMPLOYER'];
+        $data = [];
+        foreach ($workers as $key => $value) {
+            if ( $value->getRoles() == $role ) {
+                $data[] = [
+                    'id' => $value->getId(),
+                    'username' => $value->getUsername(),
+                    'service' => $value->getService()->getName(),
+                    'matricule' => $value->getMATRICULE()
+
+                ];
+            }
+        }
         
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('default/mypdf.html.twig', [
-            'title' => "Télé-Déclaration du ". date_format(new \DateTime(),'d/m/Y'),
-            // 'data' => $data
+
+            'title' => 'Liste des employées',
+            
+            'data' => $data
         ]);
         
         // Load HTML to Dompdf

@@ -422,7 +422,8 @@ class UserController extends AbstractController
                     $data[] = [
                         'id' => $value->getId(),
                         'username' => $value->getUsername(),
-                        'service' => $value->getService()->getName()
+                        'service' => $value->getService()->getName(),
+                        'matricule' => $value->getMATRICULE()
 
                     ];
                 }
